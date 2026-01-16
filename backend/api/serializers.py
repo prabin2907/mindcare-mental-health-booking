@@ -36,28 +36,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         """Validate appointment data"""
         doctor = data.get('doctor')
         consultation_type = data.get('consultation_type')
-        
-        # TEMPORARILY COMMENT OUT TIME VALIDATION
-        # appointment_date = data.get('appointment_date')
-        # appointment_time = data.get('appointment_time')
-        
-        # Check if appointment is in the past
-        # if appointment_date and appointment_time:
-        #     from datetime import datetime
-        
-        #     # Create naive datetime
-        #     appointment_datetime = datetime.combine(appointment_date, appointment_time)
-        #     current_datetime = timezone.now()
-        
-        #     # Make both naive or both aware
-        #     if timezone.is_aware(current_datetime):
-        #         appointment_datetime = timezone.make_aware(appointment_datetime)
-        
-        #     if appointment_datetime < current_datetime:
-        #         raise serializers.ValidationError({
-        #             'appointment_date': 'Cannot book appointment in the past.'
-        #         })
-        
+                
         # Check if doctor is available
         if doctor and not doctor.is_available:
             raise serializers.ValidationError({

@@ -16,8 +16,6 @@ const AdminLogin = () => {
     setLoading(true);
     setError('');
 
-    // Simple authentication (for demo)
-    // In real app, this would call Django API
     if (credentials.username === 'admin' && credentials.password === 'admin123') {
       localStorage.setItem('adminToken', 'demo-token-123');
       localStorage.setItem('adminUser', JSON.stringify({

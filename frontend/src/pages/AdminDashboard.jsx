@@ -90,10 +90,7 @@ const AdminDashboard = () => {
       const specsResponse = await getSpecializations();
       setSpecializations(specsResponse.data);
       
-      // Load appointments from Django API
-      // Note: You need to create a GET endpoint for appointments in Django
-      // For now, using mock appointments if API not available
-      // NEW CODE (use real API):
+      
 // Load appointments from Django API
 try {
   const appointmentsResponse = await getAppointments();
