@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+// Hardcode the URL for now
+const API_BASE_URL = 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -8,7 +9,6 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
 // Doctor APIs
 export const getDoctors = () => api.get('/doctors/');
 export const getDoctor = (id) => api.get(`/doctors/${id}/`);
