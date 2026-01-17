@@ -18,11 +18,10 @@ MindCare is a full-stack mental health appointment booking system connecting pat
 - Appointment scheduling system
 - PostgreSQL database hosted on Neon
 
-### Database (MongoDB)
+### Database (Postgres)
 - User profiles (patients & therapists)
 - Appointment records
 - Availability schedules
-- Session notes (therapists only)
 
 ### AIs Used
 DeepSeek: https://chat.deepseek.com/share/7p27zqxxckpnys2226
