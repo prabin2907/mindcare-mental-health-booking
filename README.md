@@ -43,3 +43,21 @@ DeepSeek: https://chat.deepseek.com/share/7p27zqxxckpnys2226
  - POST	/doctors/
  - PUT	/doctors/{id}/
  - DELETE	/doctors/{id}/
+
+### URLS
+FRONTEND: 
+  - URL: https://mindcarehealthbooking.netlify.app/
+  - host: Netlify
+  - STEPS TO DO
+    - Push React code to GitHub
+    - Set the build settings
+    - Add environment variable: REACT_APP_API_URL=https://mindcare-hospital-booking.onrender.com/api
+    - deploy
+BACKEND:
+  - URL: https://mindcare-hospital-booking.onrender.com/
+  - host: Render
+  - STEPS TO DO
+    - Push Django code to GitHub repository
+    - Connect GitHub repository
+    - Add environment variables
+    - deploy
