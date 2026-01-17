@@ -5,6 +5,7 @@ Django settings for hospital project.
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url  # Add this
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,6 +25,11 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Add Render hostname automatically
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    ALLOWED_HOSTS.append('.onrender.com')
 
 # Application definition
 
@@ -44,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Must be first
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -72,24 +79,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hospital.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+# Database configuration
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'neondb'),
-        'USER': os.getenv('DB_USER', 'neondb_owner'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'npg_VOxhe4t7aIkL'),
-        'HOST': os.getenv('DB_HOST', 'ep-sparkling-smoke-a14wlnpz-pooler.ap-southeast-1.aws.neon.tech'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+if DATABASE_URL:
+    # Use DATABASE_URL from Render (PostgreSQL)
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
     }
-}
+else:
+    # Use your Neon database or SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'neondb'),
+            'USER': os.getenv('DB_USER', 'neondb_owner'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'npg_VOxhe4t7aIkL'),
+            'HOST': os.getenv('DB_HOST', 'ep-sparkling-smoke-a14wlnpz-pooler.ap-southeast-1.aws.neon.tech'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+        }
+    }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -107,21 +119,22 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
 STATIC_URL = 'static/'
+
+# For production
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
@@ -129,8 +142,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-# For development only - allows React to connect
-CORS_ALLOW_ALL_ORIGINS = True
+# Add from environment variable
+if os.environ.get('CORS_ALLOWED_ORIGINS'):
+    CORS_ALLOWED_ORIGINS.extend(
+        os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
+    )
+
+# For development only
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only True in development
 
 # REST Framework settings
 REST_FRAMEWORK = {
