@@ -1,6 +1,6 @@
 ﻿services:
   - type: web
-    name: mindcare-backend
+    name: mindcare-hospital-api
     env: python
     region: singapore
     plan: free
@@ -8,7 +8,7 @@
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py migrate
-      python manage.py collectstatic --noinput
+      python manage.py collectstatic --no-input
     startCommand: gunicorn hospital.wsgi:application
     envVars:
       - key: SECRET_KEY
@@ -16,8 +16,18 @@
       - key: DEBUG
         value: false
       - key: ALLOWED_HOSTS
-        value: ".onrender.com"
+        value: '.onrender.com'
       - key: DISABLE_COLLECTSTATIC
         value: 1
       - key: CORS_ALLOWED_ORIGINS
-        value: "https://mindcarehealthbooking.netlify.app,http://localhost:3000"
+        value: 'https://your-mindcare.netlify.app,http://localhost:3000'
+      - key: DB_NAME
+        value: 'neondb'
+      - key: DB_USER
+        value: 'neondb_owner'
+      - key: DB_PASSWORD
+        value: 'npg_VOxhe4t7aIkL'
+      - key: DB_HOST
+        value: 'ep-sparkling-smoke-a14wlnpz-pooler.ap-southeast-1.aws.neon.tech'
+      - key: DB_PORT
+        value: '5432'
