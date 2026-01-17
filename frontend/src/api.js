@@ -1,6 +1,6 @@
 ﻿import axios from 'axios';
 
-// Always use Render URL - simpler, no confusion
+// Use Render backend URL
 const API_BASE_URL = 'https://mindcare-hospital-booking.onrender.com/api';
 
 const api = axios.create({
@@ -10,8 +10,8 @@ const api = axios.create({
   },
 });
 
-// Debug
-console.log('🚀 Connecting to:', API_BASE_URL);
+// Debug log
+console.log('🚀 Backend URL:', API_BASE_URL);
 
 // Doctor APIs
 export const getDoctors = () => api.get('/doctors/');
@@ -27,7 +27,7 @@ export const getDoctorAvailability = (id, date) =>
 // Specialization APIs
 export const getSpecializations = () => api.get('/specializations/');
 
-// Appointment APIs
+// Appointment APIs - NOW COMPLETE!
 export const getAppointments = (params = {}) => api.get('/appointments/', { params });
 export const getAppointment = (id) => api.get(/appointments//);
 export const createAppointment = (appointmentData) => api.post('/appointments/', appointmentData);
