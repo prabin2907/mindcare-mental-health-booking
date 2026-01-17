@@ -53,6 +53,7 @@ FRONTEND:
     - Set the build settings
     - Add environment variable: REACT_APP_API_URL=https://mindcare-hospital-booking.onrender.com/api
     - deploy
+      
 BACKEND:
   - URL: https://mindcare-hospital-booking.onrender.com/
   - host: Render
